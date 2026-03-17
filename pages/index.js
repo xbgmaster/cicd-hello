@@ -10,7 +10,7 @@ export default function Home() {
       </header>
 
       <main className={styles.main}>
-        <h2>Products</h2>
+        <h2>Products: </h2>
         <div className={styles.grid}>
           {products.map((p) => (
             <div key={p.id} className={styles.card}>
@@ -25,7 +25,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        <p>SnapCart &copy; 2025 — Running on Kubernetes</p>
+        <p>SnapCart &copy; 2026 — Running on Kubernetes</p>
       </footer>
     </div>
   );
