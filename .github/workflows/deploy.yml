@@ -15,16 +15,16 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 34.239.124.209
-          username: ec2-user
+          username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # 1. Update and install Docker if not present
             sudo yum update -y
             sudo yum install docker -y
             sudo service docker start
-            sudo usermod -aG docker ec2-user
+            sudo usermod -aG docker ubuntu
 
-            # 2. Login to Docker Hub using the GitHub Secret (Secure way)
+            # 2. Login to Docker Hub using the GitHub Secret
             echo "${{ secrets.DOCKER_TOKEN }}" | sudo docker login -u alejandromoraecheverry --password-stdin
 
             # 3. Stop and remove existing container if it exists
