@@ -19,13 +19,15 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # 1. Update and install Docker if not present
-            sudo yum update -y
-            sudo yum install docker -y
-            sudo service docker start
+            sudo apt update -y
+            sudo apt install docker.io -y
+            sudo systemctl start docker
+            sudo systemctl enable docker
             sudo usermod -aG docker ubuntu
 
             # 2. Login to Docker Hub using the GitHub Secret
             echo "${{ secrets.DOCKER_TOKEN }}" | sudo docker login -u alejandromoraecheverry --password-stdin
+
 
             # 3. Stop and remove existing container if it exists
             sudo docker stop cicd-hello || true
