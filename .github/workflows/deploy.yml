@@ -14,7 +14,7 @@ jobs:
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: 34.239.124.209
+          host: 35.153.144.89
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
@@ -32,3 +32,8 @@ jobs:
             sudo docker pull ghcr.io/xbgmaster/cicd-hello:latest
 
             sudo docker run -d -p 80:3000 ghcr.io/xbgmaster/cicd-hello:latest
+      - name: Trigger Lambda Function
+        run: |
+          curl -X POST "${{ secrets.LAMBDA_URL }}" \
+          -H "Content-Type: application/json" \
+          -d '{"status":"success","service":"cicd-hello"}'
