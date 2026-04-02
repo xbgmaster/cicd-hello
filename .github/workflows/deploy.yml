@@ -11,27 +11,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to EC2 via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: 35.153.144.89
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            # 1. Update and install Docker if not present
-            sudo apt update -y
-            sudo apt install docker.io -y
-            sudo systemctl start docker
-            sudo systemctl enable docker
-            # 2. Login to Docker Hub using the GitHub Secret
-            echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      # - name: Deploy to EC2 via SSH
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: 35.153.144.89
+      #     username: ubuntu
+      #     key: ${{ secrets.EC2_SSH_KEY }}
+      #     script: |
+      #       # 1. Update and install Docker if not present
+      #       sudo apt update -y
+      #       sudo apt install docker.io -y
+      #       sudo systemctl start docker
+      #       sudo systemctl enable docker
+      #       # 2. Login to Docker Hub using the GitHub Secret
+      #       echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            sudo docker stop cicd-hello || true
-            sudo docker rm cicd-hello || true
+      #       sudo docker stop cicd-hello || true
+      #       sudo docker rm cicd-hello || true
 
-            sudo docker pull ghcr.io/xbgmaster/cicd-hello:latest
+      #       sudo docker pull ghcr.io/xbgmaster/cicd-hello:latest
 
-            sudo docker run -d -p 80:3000 ghcr.io/xbgmaster/cicd-hello:latest
+      #       sudo docker run -d -p 80:3000 ghcr.io/xbgmaster/cicd-hello:latest
       # 3. Trigger Lambda function to notify deployment success
       - name: Trigger Lambda Function
         run: |
