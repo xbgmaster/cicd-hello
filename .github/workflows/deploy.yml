@@ -34,7 +34,13 @@ jobs:
       #       sudo docker run -d -p 80:3000 ghcr.io/xbgmaster/cicd-hello:latest
       # 3. Trigger Lambda function to notify deployment success
       - name: Trigger Lambda Function
+        if: always()
         run: |
           curl -X POST "${{ secrets.LAMBDA_URL }}" \
           -H "Content-Type: application/json" \
-          -d '{"status":"success","service":"cicd-hello"}'
+          -d '{
+            "status": "${{ job.status }}",
+            "commit": "${{ github.sha }}",
+            "author": "${{ github.actor }}",
+            "message": "${{ github.event.head_commit.message }}"
+          }'
